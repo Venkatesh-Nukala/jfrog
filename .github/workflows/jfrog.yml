@@ -1,0 +1,23 @@
+name: Push Build to Artifactory
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create artifact
+        run: echo "Hello DevOps" > app.txt
+
+      - name: Upload to Artifactory
+        run: |
+          curl -u ${{ secrets.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }} \
+          -T app.txt \
+          "${{ secrets.ARTIFACTORY_URL }}/generic-local/app.txt"
